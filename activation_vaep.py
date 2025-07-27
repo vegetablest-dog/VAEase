@@ -74,8 +74,8 @@ for coef in range(0,11):
                 postz = mean + torch.exp(0.5 * logvar) * torch.randn_like(mean, device=device)
                 kl = torch.sum(torch.exp(logvar) + torch.square(mean) - logvar, dim=1) - latent_dim
 
-                var = torch.exp(0.5 * logvar)
-                xhat = generator((1-var)*postz)
+                std = torch.exp(0.5 * logvar)
+                xhat = generator((1-std)*postz)
                 recon1 = torch.sum(torch.square(x - xhat), dim=1) / torch.exp(loggamma)
                 recon2 = d* loggamma + math.log(2 * math.pi) *d
                 loss = torch.mean(recon1 + recon2 + kl, dim=0)
@@ -117,8 +117,8 @@ for coef in range(0,11):
     postz = mean + torch.exp(0.5 * logvar) * torch.randn_like(mean, device=device)
     kl = torch.sum(torch.exp(logvar) + torch.square(mean) - logvar, dim=1) - latent_dim
 
-    var = torch.exp(0.5 * logvar)
-    xhat = generator((1-var)*postz)
+    std = torch.exp(0.5 * logvar)
+    xhat = generator((1-std)*postz)
     recon1 = torch.sum(torch.square(x - xhat), dim=1) / torch.exp(loggamma)
     recon2 = d * loggamma + math.log(2 * math.pi) * d
     loss = torch.mean(recon1 + recon2 + kl, dim=0)
