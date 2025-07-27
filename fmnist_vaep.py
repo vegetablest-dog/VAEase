@@ -38,8 +38,8 @@ if train:
             postz = mean + torch.exp(0.5 * logvar) * torch.randn_like(mean, device=device)
             kl = torch.sum(torch.exp(logvar) + torch.square(mean) - logvar, dim=1) - latent_dim
 
-            var = torch.exp(0.5 *logvar)
-            xhat = generator((1-var)*postz)
+            std = torch.exp(0.5 *logvar)
+            xhat = generator((1-std)*postz)
             recon1 = torch.sum(torch.square(x.view(-1,784) - xhat), dim=1) / torch.exp(loggamma)
             recon2 = input_dim * loggamma + math.log(2 * math.pi) * input_dim
             loss = torch.mean(recon1 + recon2 + kl, dim=0)
@@ -74,8 +74,8 @@ mean, logvar = encoder(x)
 postz = mean + torch.exp(0.5 * logvar) * torch.randn_like(mean, device=device)
 kl = torch.sum(torch.exp(logvar) + torch.square(mean) - logvar, dim=1) - latent_dim
 
-var = torch.exp(0.5 *logvar)
-xhat = generator((1-var)*postz)
+std = torch.exp(0.5 *logvar)
+xhat = generator((1-std)*postz)
 recon1 = torch.sum(torch.square(x.view(-1,784) - xhat), dim=1) / torch.exp(loggamma)
 recon2 = input_dim * loggamma + math.log(2 * math.pi) * input_dim
 loss = torch.mean(recon1 + recon2 + kl, dim=0)
